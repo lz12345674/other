@@ -1,0 +1,60 @@
+/*宏陷进 ：1.定义# define f(x) x*x时若果x是表达式 i+j则结果是：i+j*i+j而不是(i+j)*(i+j)
+           2.宏的核心思想是替换。
+           3.宏的名称一定要是标识符，而且还是用户标识符。
+           4.宏后面如果有“”一定要成对出现。
+           5.#的用法:相当与将参数转化为字符串。
+           6.##的用法:就是将两个参数链接起来。
+*/
+
+# include <stdio.h>
+
+//# define f(x) x*x
+# define f(x) (x)*(x)
+# define NAME "luozhao"
+# define STR(x) #x
+# define WIDE(x,y) y##x
+//# define NAME "luozha
+//# define char luo
+//# define 0x abcd
+
+int main()
+{
+    int i = 10, j = 10;
+    char str[20] = "WIDE(luo,zhao)";
+
+    printf("%s\n", NAME);
+    printf("%d\n", f(i+j));
+    printf("%s\n", STR(luozhao love life.));
+    printf("%s\n", str);
+    //printf("%s\n", char);
+
+    return 0;
+}
+
+/*
+-------------------错误结果１--------------------------
+zhao@ubuntu:~/C语言/Clib/other$ gcc define.c 
+define.c:7:10: error: macro names must be identifiers
+ # define 0x abcd
+          ^
+-------------------错误结果２--------------------------
+luozhao@ubuntu:~/C语言/Clib/other$ ./a.out   //f（i+j）
+luozhao
+-------------------错误结果3----------------------------//char
+define.c:12:15: error: ‘luo’ undeclared (first use in this function)
+ # define char luo
+               ^
+define.c:21:20: note: in expansion of macro ‘char’
+     printf("%s\n", char);
+                    ^
+define.c:12:15: note: each undeclared identifier is reported only once for each function it appears in
+ # define char luo
+               ^
+define.c:21:20: note: in expansion of macro ‘char’
+     printf("%s\n", char);
+                    ^
+
+--------------------------------------------------------
+*/
+
+
